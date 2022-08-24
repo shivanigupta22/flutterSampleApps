@@ -128,6 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ////////////////// Album //////////
+
+/* manual*/
 class Album {
   int userId;
   int id;
@@ -139,6 +141,28 @@ class Album {
     return Album(userId: json["userId"], id: json["id"], title: json["title"]);
   }
 }
+
+//using json serializable
+import 'package:json_annotation/json_annotation.dart';
+
+part 'album.g.dart';
+
+@JsonSerializable()
+class Album {
+  @JsonKey(name: 'userId')
+  int userId;
+  @JsonKey(name: 'id')
+  int id;
+  @JsonKey(name: 'title')
+  String title;
+
+  Album({required this.userId, required this.id, required this.title});
+
+  factory Album.fromJson(dynamic json) => _$AlbumFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AlbumToJson(this);
+}
+
 //////// FeatureOneRepository //////
 
 import 'package:flutter_first/features/feature1/data/album.dart';
