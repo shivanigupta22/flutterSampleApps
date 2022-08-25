@@ -67,24 +67,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 final alreadySaved = _saved.contains(snapshot.data[i]);
                 return ListTile(
-                    title: Text(
-                      snapshot.data[i].title,
-                      style: _biggerFont,
-                    ),
-                    trailing: Icon(
-                      alreadySaved ? Icons.favorite : Icons.favorite_border,
-                      color: alreadySaved ? Colors.red : null,
-                      semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
-                    ),
-                    onTap: () {
-                      setState(() {
-                        if (alreadySaved) {
-                          _saved.remove(snapshot.data[i]);
-                        } else {
-                          _saved.add(snapshot.data[i]);
-                        }
+                      title: Text(
+                        snapshot.data[i].title,
+                        style: _biggerFont,
+                      ),
+                      trailing: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (alreadySaved) {
+                                _saved.remove(snapshot.data[i]);
+                              } else {
+                                _saved.add(snapshot.data[i]);
+                              }
+                            });
+                          },
+                          child: Icon(
+                            alreadySaved
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: alreadySaved ? Colors.red : null,
+                            semanticLabel:
+                                alreadySaved ? 'Remove from saved' : 'Save',
+                          )),
+                      onTap: () {
+                        _navigateToDetails(snapshot.data[i]);
                       });
-                    });
               },
               itemCount: snapshot.data.length,);
         },
@@ -93,6 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+  
+   void _navigateToDetails(Album album) {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => DetailsScreen(album: album)));
   }
 
   void _pushSaved() {
@@ -156,7 +168,16 @@ class Album {
   @JsonKey(name: 'title')
   String title;
 
-  Album({required this.userId, required this.id, required this.title});
+   String title;
+  String url;
+  String thumbnailUrl;
+
+  Album(
+      {required this.albumId,
+      required this.id,
+      required this.title,
+      required this.url,
+      required this.thumbnailUrl});
 
   factory Album.fromJson(dynamic json) => _$AlbumFromJson(json);
 
