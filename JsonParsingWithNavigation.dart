@@ -203,3 +203,32 @@ class FeatureOneRepository {
     }
   }
 }
+
+//Details screen
+class DetailsScreen extends StatelessWidget {
+  final Album album;
+
+  const DetailsScreen({Key? key, required this.album}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(album.title),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(album.thumbnailUrl.toString()),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Image.network("https://picsum.photos/300/500"),
+          )
+        ],
+      ),
+    );
+  }
+}
+
